@@ -1,0 +1,126 @@
+CREATE TABLE BS_USER (
+    UserId varchar(255) NOT NULL,
+    FirstName varchar(255),
+    LastName varchar(255),
+	Email varchar(255),
+	Username varchar(255),
+	UserPassword varchar(255),
+	PRIMARY KEY (UserId)
+);
+
+CREATE TABLE CUSTOMER (
+	CustomerId varchar(255) NOT NULL,
+	PRIMARY KEY (CustomerId),
+	FOREIGN KEY (CustomerId) REFERENCES BS_USER (UserId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE BS_ADMIN (
+	AdminId varchar(255) NOT NULL,
+	PRIMARY KEY (AdminId),
+	FOREIGN KEY (AdminId) REFERENCES BS_USER (UserId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE SELLER (
+	SellerId varchar(255) NOT NULL,
+	CompanyName varchar(255),
+	PRIMARY KEY (SellerId),
+	FOREIGN KEY (SellerId) REFERENCES BS_USER (UserId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE SAHNE (
+	StageName varchar(255) NOT NULL,
+	Adres varchar(255),
+	City varchar(255),
+	IsActive boolean,
+	PRIMARY KEY (StageName)
+);
+
+CREATE TABLE ETKINLIK (
+    EtkinlikId varchar(255) NOT NULL,
+    Creator varchar(255),
+    SystemAdmin varchar(255),
+	StageName varchar(255),
+	EtkinlikName varchar(255),
+	Price int,
+	EtkinlikDate date,
+	City varchar(255),
+	PRIMARY KEY (EtkinlikId),
+	FOREIGN KEY (Creator) REFERENCES BS_USER (UserId) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (SystemAdmin) REFERENCES BS_USER (UserId) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (StageName) REFERENCES SAHNE (StageName) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE KONSER (
+	ConcertId varchar(255) NOT NULL,
+	PRIMARY KEY (ConcertId),
+	FOREIGN KEY (ConcertId) REFERENCES ETKINLIK (EtkinlikId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE TIYATRO (
+	TheatreId varchar(255) NOT NULL,
+	PRIMARY KEY (TheatreId),
+	FOREIGN KEY (TheatreId) REFERENCES ETKINLIK (EtkinlikId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+CREATE TABLE BILET (
+	TicketId varchar(255) NOT NULL,
+	EtkinlikId varchar(255),
+	PRIMARY KEY (TicketId),
+	FOREIGN KEY (EtkinlikId) REFERENCES ETKINLIK (EtkinlikId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE KONSERBILETI (
+	ConcertId varchar(255) NOT NULL,
+	RegionValue int,
+	PRIMARY KEY (ConcertId),
+	FOREIGN KEY (ConcertId) REFERENCES BILET (TicketId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE TIYATROBILETI (
+	TheatreId varchar(255) NOT NULL,
+	SeatNumber int,
+	PRIMARY KEY (TheatreId),
+	FOREIGN KEY (TheatreId) REFERENCES BILET (TicketId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE REGION (
+	RegionId varchar(255) NOT NULL,
+	ConcertId varchar(255),
+	RegionSection int,
+	IsOccupied boolean,
+	PRIMARY KEY (RegionId),
+	FOREIGN KEY (ConcertId) REFERENCES BILET (TicketId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE KOLTUK (
+	SeatId varchar(255) NOT NULL,
+	TheatreId varchar(255),
+	IsOccupied boolean,
+	PRIMARY KEY (SeatId),
+	FOREIGN KEY (TheatreId) REFERENCES BILET (TicketId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE PAYMENT (
+	PaymentId varchar(255) NOT NULL,
+	TicketId varchar(255),
+	PaymentValue int,
+	PRIMARY KEY (PaymentId),
+	FOREIGN KEY (TicketId) REFERENCES BILET (TicketId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE INDIRIM (
+	IndirimKodu varchar(255) NOT NULL,
+	TicketId varchar(255),
+	IndirimMiktari int,
+	PRIMARY KEY (IndirimKodu),
+	FOREIGN KEY (TicketId) REFERENCES BILET (TicketId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE CUSTOMER_ETKINLIK (
+	UserId varchar(255) NOT NULL,
+	EtkinlikId varchar(255),
+	FOREIGN KEY (UserId) REFERENCES BS_USER (UserId) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (EtkinlikId) REFERENCES ETKINLIK (EtkinlikId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
