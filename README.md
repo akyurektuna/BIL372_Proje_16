@@ -56,4 +56,4 @@ bulunmaktadır.
 
 ## EER 
 
-(/eer.jpg)
+![alt text](https://github.com/akyurektuna/BIL372_Proje_16/blob/main/eer.JPG)
