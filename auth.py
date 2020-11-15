@@ -21,6 +21,10 @@ def login_post():
     user = BSUser.query.filter_by(email=email).first()
 
     #user emaili var mı diye kontrol
+    #if not user:
+    #    flask('user yok diyor')
+    #    return redirect(url_for('auth.login'))
+
     if not user or not check_password_hash(user.userpassword, password):
         flash('Please check your login details and try again.')
         return redirect(url_for('auth.login')) # user yoksa tekrar login sayfası
@@ -45,11 +49,11 @@ def signup_post():
     user = BSUser.query.filter_by(email=email).first() # email kayıtlı mı diye bakıyoruz
 
     max_id = db.session.query(db.func.max(BSUser.userid)).scalar() #max_id yi buluyor
-
+    
     if max_id is None:
-        max_id = 0
+        max_id = str(0)
     else:
-        max_id = max_id+1
+        max_id = str(int(max_id) + 1) #burada numeric string inc edildi
 
     if user: # eger mail önceden kayıtlı ise hata
         flash('Email address already exists')

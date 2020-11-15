@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block user %}
+<p class="profile-name">{{ name }}</p>
+<p class="designation">Premium user</p>
+{% endblock %}
+{% block indexs %}
+<div class="main-panel">
+          <div class="content-wrapper">
+            <div class="row">
+              <div class="col-12 grid-margin">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title"> </h4>
+                    <p class="card-description"> Etkinlik </p>
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="notification is-danger">
+                            {{ messages[0] }}. Go to <a href="{{ url_for('auth.login') }}">login page</a>.
+                        </div>
+                    {% endif %}
+                    {% endwith %}
+                    <form class="forms-sample" action="/add_etkinlik" method="POST">
+                      <div class="form-group">
+                        <label>SysCode</label>
+                        <input type="number" class="form-control" name="m_syscode" placeholder="SysCode">
+                      </div>
+                      <div class="form-group">
+                        <label>Mcode</label>
+                        <input type="text" class="form-control" name="m_code" placeholder="m_code" maxlength="15">
+                      </div>
+                      <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" class="form-control" name="m_name" placeholder="Name" maxlength="25">
+                      </div>
+                      <div class="form-group">
+                        <label>Short Name</label>
+                        <input type="text" class="form-control" name="m_shortname" placeholder="Short Name" maxlength="10">
+                      </div>
+                      <div class="form-group">
+                        <label>Parent Product</label>
+                        <select class="form-control" id="exampleFormControlSelect3" name="parent">
+                            <option value="0">Yok</option>
+                            {% for product in products %}
+                            <option value="{{product.m_syscode}}">{{product.m_name}}</option>
+                            {% endfor %}
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label>Abstract?</label>
+                        <input type="checkbox" name="m_abstract">
+                      </div>
+                      <div class="form-group">
+                        <label>Category</label>
+                        <input type="text" class="form-control" name="m_category" placeholder="Category" maxlength="12">
+                      </div>
+                      <button type="submit" class="btn btn-success mr-2">Submit</button>
+                      <button class="btn btn-light">Cancel</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- content-wrapper ends -->
+          <!-- partial:../../partials/_footer.html -->
+          <footer class="footer">
+            <div class="container-fluid clearfix">
+              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2019 <a href="http://www.bootstrapdash.com/" target="_blank">Bootstrapdash</a>. All rights reserved.</span>
+              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="mdi mdi-heart text-danger"></i>
+              </span>
+            </div>
+          </footer>
+          <!-- partial -->
+        </div>
+
+{% endblock %}

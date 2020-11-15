@@ -1,5 +1,5 @@
 CREATE TABLE BS_USER (
-    UserId varchar(255) NOT NULL,
+    UserId integer NOT NULL,
     FirstName varchar(255),
     LastName varchar(255),
 	Email varchar(255),
