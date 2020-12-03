@@ -1,4 +1,4 @@
-{% extends "baseSeller.html" %}
+{% extends "baseAdmin.html" %}
 {% block user %}
 <p class="profile-name">{{ name }}</p>
 <p class="designation">Premium user</p>
@@ -15,29 +15,26 @@
                       <thead>
                         <tr>
                           <th> Stage Name </th>
-                          <th> Etkinlik Name </th>
-                          <th> Price </th>
-                          <th> Date </th>
+                          <th> Adres </th>
                           <th> City </th>
+                          <th> Is Active </th>
                         </tr>
                       </thead>
-					  {% for index in etkinlik %}
+					  {% for index in sahne %}
 						<tr>
 						<td>
 							{{index.stagename}}
 						</td>
 						<td>
-							{{index.etkinlikname}}
-						</td>
-						<td>
-							{{index.price}}
-						</td>
-						<td>
-							{{index.etkinlikdate}}
+							{{index.adres}}
 						</td>
 						<td>
 							{{index.city}}
 						</td>
+						<td>
+							{{index.isactive}}
+						</td>
+						
 						</tr>
 						{% endfor %}
                     </table>

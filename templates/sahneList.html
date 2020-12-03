@@ -15,29 +15,22 @@
                       <thead>
                         <tr>
                           <th> Stage Name </th>
-                          <th> Etkinlik Name </th>
-                          <th> Price </th>
-                          <th> Date </th>
+                          <th> Adres </th>
                           <th> City </th>
                         </tr>
                       </thead>
-					  {% for index in etkinlik %}
+					  {% for index in sahne %}
 						<tr>
 						<td>
 							{{index.stagename}}
 						</td>
 						<td>
-							{{index.etkinlikname}}
-						</td>
-						<td>
-							{{index.price}}
-						</td>
-						<td>
-							{{index.etkinlikdate}}
+							{{index.adres}}
 						</td>
 						<td>
 							{{index.city}}
 						</td>
+						
 						</tr>
 						{% endfor %}
                     </table>

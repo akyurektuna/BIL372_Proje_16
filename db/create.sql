@@ -124,3 +124,9 @@ CREATE TABLE CUSTOMER_ETKINLIK (
 	FOREIGN KEY (EtkinlikId) REFERENCES ETKINLIK (EtkinlikId) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+INSERT INTO bs_user (userid, firstname, lastname, email, username, userpassword)
+VALUES('0','admin','admin','admin@gmail.com','admin','sha256$ruAnMgmR$16fefe0d51b1e2abeee5619e2f806c0cc2816aaa725f4becb2f8858104ffb90b');
+
+
+INSERT INTO bs_admin (adminid)
+VALUES('0');
