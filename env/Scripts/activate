@@ -28,7 +28,7 @@ deactivate () {
     fi
 
     unset VIRTUAL_ENV
-    if [ ! "${1:-}" = "nondestructive" ] ; then
+    if [ ! "$1" = "nondestructive" ] ; then
     # Self destruct!
         unset -f deactivate
     fi
@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\akyur\Documents\GitHub\BIL372_Proje_16\env"
+VIRTUAL_ENV="C:\Users\Asus\Documents\GitHub\BIL372_Proje_16\env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

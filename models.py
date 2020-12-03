@@ -10,3 +10,14 @@ class BSUser(UserMixin, db.Model): #databasedeki users tablosu elemanlarını ta
     userpassword = db.Column(db.String(100))
     def get_id(self):
         return self.userid
+
+class Customer(db.Model):
+    customerid = db.Column(db.String(100),primary_key=True)
+    def get_id(self):
+        return self.customerid
+
+class Seller(db.Model):
+    sellerid = db.Column(db.String(100),primary_key=True)
+    companyname = db.Column(db.String(100))
+    def get_id(self):
+        return self.sellerid

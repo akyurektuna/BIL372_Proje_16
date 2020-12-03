@@ -2,6 +2,8 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import BSUser
+from .models import Seller
+from .models import Customer
 from . import db
 
 auth = Blueprint('auth', __name__)
@@ -45,6 +47,7 @@ def signup_post():
     firstname = request.form.get('firstname')
     lastname = request.form.get('lastname')
     userpassword = request.form.get('userpassword')
+    userRole = request.form.get('userRole')
 
     user = BSUser.query.filter_by(email=email).first() # email kayıtlı mı diye bakıyoruz
 
@@ -62,10 +65,19 @@ def signup_post():
 
     # user kayıtlı degilse kayıt ediyoruz!
     new_user = BSUser(userid= max_id,email=email, firstname=firstname, lastname=lastname, username=username, userpassword=generate_password_hash(userpassword, method='sha256'))
-
-
     # database'e ekleme işlemi commit edilmeli
     db.session.add(new_user)
+    db.session.commit()
+    
+    if userRole=='customer':
+        new_customer = Customer(customerid= max_id)
+        db.session.add(new_customer)
+    elif userRole=='seller':
+        companyname = request.form.get('companyname')
+        new_seller = Seller(sellerid= max_id, companyname=companyname)
+        db.session.add(new_seller)
+
+    
     db.session.commit()
 
 
