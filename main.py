@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_required, current_user
 from sqlalchemy.sql import exists
-from .models import BSUser
+from .models import *
 from . import db
 
 
@@ -10,6 +10,14 @@ main = Blueprint('main', __name__)
 @main.route('/')
 @login_required
 def index():
+    seller = Seller.query.filter_by(sellerid=current_user.userid).first()
+    customer = Customer.query.filter_by(customerid=current_user.userid).first()
+    print(seller)
+    print(customer)
+    if seller:
+        return render_template('indexSeller.html', name=current_user.username)
+    elif customer:
+        return render_template('indexCustomer.html', name=current_user.username)
     return render_template('index.html', name=current_user.username)
 
 @main.route('/profile')
