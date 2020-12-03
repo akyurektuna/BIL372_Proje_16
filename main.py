@@ -26,8 +26,7 @@ def profile():
 
 @main.route('/add_etkinlik')
 def add_etkinlik_view():
-	#products = Product.query.filter_by(is_active = True)
-	return render_template('etkinlik.html',name=current_user.username, etkinlik=etkinlik)
+	return render_template('etkinlik.html',name=current_user.username)
 
 @main.route('/add_etkinlik', methods=['POST'])
 def add_etkinlik():

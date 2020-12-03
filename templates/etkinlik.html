@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "baseSeller.html" %}
 {% block user %}
 <p class="profile-name">{{ name }}</p>
 <p class="designation">Premium user</p>
@@ -21,40 +21,36 @@
                     {% endwith %}
                     <form class="forms-sample" action="/add_etkinlik" method="POST">
                       <div class="form-group">
-                        <label>SysCode</label>
-                        <input type="number" class="form-control" name="m_syscode" placeholder="SysCode">
+                        <label>Stage Name</label>
+                        <input type="text" class="form-control" name="stageName" placeholder="Stage Name">
                       </div>
                       <div class="form-group">
-                        <label>Mcode</label>
-                        <input type="text" class="form-control" name="m_code" placeholder="m_code" maxlength="15">
+                        <label>Etkinlik Name</label>
+                        <input type="text" class="form-control" name="etkinlikName" placeholder="Etkinlik Name">
                       </div>
                       <div class="form-group">
-                        <label>Name</label>
-                        <input type="text" class="form-control" name="m_name" placeholder="Name" maxlength="25">
+                        <label>Price</label>
+                        <input type="number" class="form-control" name="price">
                       </div>
                       <div class="form-group">
-                        <label>Short Name</label>
-                        <input type="text" class="form-control" name="m_shortname" placeholder="Short Name" maxlength="10">
+                        <label>Etkinlik Date</label>
+                        <input type="date" class="form-control" name="etkinlikDate">
                       </div>
-                      <div class="form-group">
-                        <label>Parent Product</label>
-                        <select class="form-control" id="exampleFormControlSelect3" name="parent">
-                            <option value="0">Yok</option>
-                            {% for product in products %}
-                            <option value="{{product.m_syscode}}">{{product.m_name}}</option>
-                            {% endfor %}
-                        </select>
+					  <div class="form-group">
+                        <label>City</label>
+                        <input type="text" class="form-control" name="city">
                       </div>
-                      <div class="form-group">
-                        <label>Abstract?</label>
-                        <input type="checkbox" name="m_abstract">
-                      </div>
-                      <div class="form-group">
-                        <label>Category</label>
-                        <input type="text" class="form-control" name="m_category" placeholder="Category" maxlength="12">
-                      </div>
+					  <div class="form-group">
+							<label class="radio">
+								<input type="radio" name="etkinlikType" value="tiyatro" id="tiyatro">
+								Tiyatro
+							</label>
+							<label class="radio">
+								<input type="radio" name="etkinlikType" value="konser" id="konser">
+								Konser
+							</label>
+						</div>
                       <button type="submit" class="btn btn-success mr-2">Submit</button>
-                      <button class="btn btn-light">Cancel</button>
                     </form>
                   </div>
                 </div>
