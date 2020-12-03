@@ -53,6 +53,34 @@ def add_etkinlik():
     """
 	return redirect(url_for('main.etkinlik_list'))
 
+@main.route('/add_sahne')
+def add_sahne_view():
+	return render_template('addSahne.html',name=current_user.username)
+
+@main.route('/add_sahne', methods=['POST'])
+def add_sahne():
+	
+    stageName = request.form.get('stageName')
+    adres = request.form.get('adres')
+    city = request.form.get('city')
+    isActive = request.form.get('isActive')
+	
+    sahne = Sahne.query.filter_by(stagename=stageName).first()
+
+    if sahne:
+        flash('Stage already exist')
+        return redirect(url_for('main.add_sahne'))
+    if isActive=='yes':
+        new_stage = Sahne(stagename=stageName, adres=adres, city=city, isactive=True)       
+    elif isActive=='no':
+        new_stage = Sahne(stagename=stageName, adres=adres, city=city, isactive=False)
+
+    db.session.add(new_stage)
+    db.session.commit()
+    
+    return redirect(url_for('main.index'))
+
+
 @main.route('/etkinlik_list')
 def etkinlik_list():
 	#products = Product.query.filter_by(is_active = True) #aktif olan tüm productları alıyoruz ve product_list.html dosyasına products değişkeni ile gönderiyoruz

@@ -1,0 +1,64 @@
+{% extends "baseSeller.html" %}
+{% block user %}
+<p class="profile-name">{{ name }}</p>
+<p class="designation">Premium user</p>
+{% endblock %}
+{% block indexs %}
+<div class="main-panel">
+          <div class="content-wrapper">
+            <div class="row">
+              <div class="col-12 grid-margin">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title"> </h4>
+                    <p class="card-description"> Sahne </p>
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="notification is-danger">
+                            {{ messages[0] }}
+                        </div>
+                    {% endif %}
+                    {% endwith %}
+                    <form class="forms-sample" action="/add_sahne" method="POST">
+                      <div class="form-group">
+                        <label>Stage Name</label>
+                        <input type="text" class="form-control" name="stageName" placeholder="Stage Name">
+                      </div>
+                      <div class="form-group">
+                        <label>Adres</label>
+                        <input type="text" class="form-control" name="adres" placeholder="Adres">
+                      </div>
+					  <div class="form-group">
+                        <label>City</label>
+                        <input type="text" class="form-control" name="city">
+                      </div>
+					  <div class="form-group">
+							<label class="radio">Is Active?
+								<input type="radio" name="isActive" value="yes" id="yes">
+								Yes
+							</label>
+							<label class="radio">
+								<input type="radio" name="isActive" value="no" id="no">
+								No
+							</label>
+						</div>
+                      <button type="submit" class="btn btn-success mr-2">Submit</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- content-wrapper ends -->
+          <!-- partial:../../partials/_footer.html -->
+          <footer class="footer">
+            <div class="container-fluid clearfix">
+              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2019 <a href="http://www.bootstrapdash.com/" target="_blank">Bootstrapdash</a>. All rights reserved.</span>
+              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="mdi mdi-heart text-danger"></i>
+              </span>
+            </div>
+          </footer>
+          <!-- partial -->
+        </div>
+
+{% endblock %}
