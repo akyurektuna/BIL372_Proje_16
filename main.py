@@ -12,8 +12,6 @@ main = Blueprint('main', __name__)
 def index():
     seller = Seller.query.filter_by(sellerid=current_user.userid).first()
     customer = Customer.query.filter_by(customerid=current_user.userid).first()
-    print(seller)
-    print(customer)
     if seller:
         return render_template('indexSeller.html', name=current_user.username)
     elif customer:
