@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 from sqlalchemy.sql import exists
 from .models import *
 from . import db
+from sqlalchemy import exc
 
 
 main = Blueprint('main', __name__)
@@ -202,15 +203,7 @@ def buy_ticket(id):
     etkinlikname = request.form.get('etkinlikname')
     konserMi = db.session.query(Konser).filter_by(concertid=id)
     tiyatroMu = db.session.query(Tiyatro).filter_by(theatreid=id)
-    if konserMi:
-        regionvalue = request.form.get('regionvalue')
-        new_konserbilet = Konserbileti(concertid=id,regionvalue=regionvalue)
-        db.session.add(new_konserbilet)
-    elif tiyatroMu:
-        seatnumber = request.form.get('seatnumber')
-        new_tiyatrobilet = Tiyatrobileti(theatreid=id,seatnumber=seatnumber)
-        db.session.add(new_tiyatrobilet)
-	
+
     max_id = db.session.query(db.func.max(Bilet.ticketid)).scalar() #max_id yi buluyor
     
     if max_id is None:
@@ -220,8 +213,17 @@ def buy_ticket(id):
 
     new_bilet = Bilet(ticketid= max_id, etkinlikid=id)
     db.session.add(new_bilet)
+    if konserMi:
+        regionvalue = request.form.get('regionvalue')
+        new_konserbilet = Konserbileti(concertid=id,regionvalue=regionvalue)
+        db.session.add(new_konserbilet)
+    elif tiyatroMu:
+        seatnumber = request.form.get('seatnumber')
+        new_tiyatrobilet = Tiyatrobileti(theatreid=id,seatnumber=seatnumber)
+        db.session.add(new_tiyatrobilet)
+	
     db.session.commit()
-    if creator=='0':
-        return redirect(url_for('main.etkinlik_list_admin'))
+    #if creator=='0':
+        #return redirect(url_for('main.etkinlik_list_admin'))
     return redirect(url_for('main.etkinlik_list'))
     #user icin biletler sayfası ekleyince redirect(url_for('main.user_bilet_list'))
