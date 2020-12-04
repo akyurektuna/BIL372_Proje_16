@@ -1,0 +1,72 @@
+{% extends "baseSeller.html" %}
+{% block user %}
+<p class="profile-name">{{ name }}</p>
+<p class="designation">Premium user</p>
+{% endblock %}
+{% block indexs %}
+<div class="main-panel">
+          <div class="content-wrapper">
+            <div class="row">
+              <div class="col-12 grid-margin">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title"> </h4>
+                    <p class="card-description"> Buy Ticket </p>
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="notification is-danger">
+                            {{ messages[0] }}. Go to <a href="{{ url_for('auth.login') }}">login page</a>.
+                        </div>
+                    {% endif %}
+                    {% endwith %}
+                    <form class="forms-sample" action="/buy_ticket/{{etkinlik.etkinlikid}}/" method="POST">
+
+                      <div class="form-group">
+                        <label>Etkinlik Name: </label>
+                        <td>
+							{{etkinlik.etkinlikname}}
+                        </td>
+                      </div>
+                      
+                      <div class="form-group">
+                        <label>Price: </label>
+						<td>
+							{{etkinlik.price}}
+						</td>
+                      </div>
+
+                      {% if True %}
+					  <div class="form-group">
+                        <label>Region Value</label>
+                        <input type="number" class="form-control" name="regionvalue">
+                      </div>
+                      {% endif %}
+
+                      {% if False %}
+					  <div class="form-group">
+                        <label>Seat Number</label>
+                        <input type="number" class="form-control" name="seatnumber">
+                      </div>
+                      {% endif %}
+
+					  <div class="form-group">
+                      <button type="submit" class="btn btn-success mr-2">Submit</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- content-wrapper ends -->
+          <!-- partial:../../partials/_footer.html -->
+          <footer class="footer">
+            <div class="container-fluid clearfix">
+              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2019 <a href="http://www.bootstrapdash.com/" target="_blank">Bootstrapdash</a>. All rights reserved.</span>
+              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="mdi mdi-heart text-danger"></i>
+              </span>
+            </div>
+          </footer>
+          <!-- partial -->
+        </div>
+
+{% endblock %}

@@ -193,31 +193,35 @@ def etkinlik_list_admin():
 	return render_template('etkinlik_list_admin.html',name=current_user.username, etkinlik=etkinlik)
 
 @main.route('/buy_ticket/<id>')
-def buy_ticket_view():
-    return render_template('bilet.html',name=current_user.username)
+def buy_ticket_view(id):
+    etkinlik = Etkinlik.query.get(id)
+    return render_template('buy_ticket.html',name=current_user.username,etkinlik=etkinlik)
 
-@main.route('/buy_ticket/<id>', methods = ['GET', 'POST'])
+@main.route('/buy_ticket/<id>/', methods = ['POST'])
 def buy_ticket(id):
-    konserMi = db.session.query(konser).filter_by(concertid=id)
-    tiyatroMu = db.session.query(tiyatro).filter_by(tiyatroid=id)
+    etkinlikname = request.form.get('etkinlikname')
+    konserMi = db.session.query(Konser).filter_by(concertid=id)
+    tiyatroMu = db.session.query(Tiyatro).filter_by(theatreid=id)
     if konserMi:
         regionvalue = request.form.get('regionvalue')
-        new_konserbilet = konser(concertid=id,regionvalue=regionvalue)
+        new_konserbilet = Konserbileti(concertid=id,regionvalue=regionvalue)
         db.session.add(new_konserbilet)
-	elif tiyatroMu:
+    elif tiyatroMu:
         seatnumber = request.form.get('seatnumber')
-        new_tiyatrobilet = tiyatro(theatreid=id,seatnumber=seatnumber)
+        new_tiyatrobilet = Tiyatrobileti(theatreid=id,seatnumber=seatnumber)
         db.session.add(new_tiyatrobilet)
 	
-    max_id = db.session.query(db.func.max(bilet.ticketid)).scalar() #max_id yi buluyor
+    max_id = db.session.query(db.func.max(Bilet.ticketid)).scalar() #max_id yi buluyor
     
     if max_id is None:
         max_id = str(0)
     else:
         max_id = str(int(max_id) + 1) #burada numeric string inc edildi
 
-    new_bilet = bilet(ticketid= max_id, etkinlikid=id)
+    new_bilet = Bilet(ticketid= max_id, etkinlikid=id)
     db.session.add(new_bilet)
     db.session.commit()
-
-return redirect(url_for('main.user_bilet_list'))
+    if creator=='0':
+        return redirect(url_for('main.etkinlik_list_admin'))
+    return redirect(url_for('main.etkinlik_list'))
+    #user icin biletler sayfası ekleyince redirect(url_for('main.user_bilet_list'))
