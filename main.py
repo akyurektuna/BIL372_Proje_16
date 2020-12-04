@@ -219,16 +219,20 @@ def buy_ticket(id):
 
     if konserMi:
         regionvalue = request.form.get('regionvalue')
-        new_konserbilet = Konserbileti(kbiletid=max_id,concertid=id,regionvalue=regionvalue)
+        new_konserbilet = Konserbileti(kbiletid=max_id,concertid=id,regionvalue=regionvalue,userid=current_user.userid)
         db.session.add(new_konserbilet)
     
     elif tiyatroMu:
         seatnumber = request.form.get('seatnumber')
-        new_tiyatrobilet = Tiyatrobileti(tbiletid=max_id,theatreid=id,seatnumber=seatnumber)
+        new_tiyatrobilet = Tiyatrobileti(tbiletid=max_id,theatreid=id,seatnumber=seatnumber,userid=current_user.userid)
         db.session.add(new_tiyatrobilet)
 	
     db.session.commit()
-    #if creator=='0':
-        #return redirect(url_for('main.etkinlik_list_admin'))
-    return redirect(url_for('main.etkinlik_list'))
+    return redirect(url_for('main.etkinlik_list_customer'))
     #user icin biletler sayfası ekleyince redirect(url_for('main.user_bilet_list'))
+
+@main.route('/list_user_tickets')
+def list_user_tickets():
+    ticketskonser = Tiyatrobileti.query.filter_by(userid = current_user.userid) 
+    ticketstiyatro = Konserbileti.query.filter_by(userid = current_user.userid)
+    return render_template('list_user_tickets.html',ticketskonser=ticketskonser,ticketstiyatro=ticketstiyatro)

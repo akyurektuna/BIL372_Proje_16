@@ -72,6 +72,7 @@ class Konser(db.Model):
 class Konserbileti(db.Model):
     kbiletid = db.Column(db.String(100),primary_key=True) #bilet tablosuyla bagladigimiz pkey
     concertid = db.Column(db.String(100)) #konser tablosuyla bagladigimiz fkey
+    userid = db.Column(db.String(100)) #user tablosuyla bagladigimiz fkey
     regionvalue = db.Column(db.Integer())
     def get_id(self):
         return self.concertid
@@ -107,6 +108,7 @@ class Tiyatro(db.Model):
 class Tiyatrobileti(db.Model):
     tbiletid = db.Column(db.String(100),primary_key=True)
     theatreid = db.Column(db.String(100))
+    userid = db.Column(db.String(100), primary_key=True)
     seatnumber = db.Column(db.Integer())
     def get_id(self):
         return self.theatreid
