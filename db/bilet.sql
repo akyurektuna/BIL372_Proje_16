@@ -1,0 +1,20 @@
+DROP TABLE IF EXISTS konserbileti;
+DROP TABLE IF EXISTS tiyatrobileti;
+
+CREATE TABLE konserbileti(
+	kbiletid varchar(255) NOT NULL,
+	ConcertId varchar(255) NOT NULL,
+	RegionValue int,
+	PRIMARY KEY (kbiletid),
+	FOREIGN KEY (kbiletid) REFERENCES BILET (TicketId) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (ConcertId) REFERENCES KONSER (ConcertId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE tiyatrobileti(
+	tbiletid varchar(255) NOT NULL,
+	TheatreId varchar(255) NOT NULL,
+	SeatNumber int,
+	PRIMARY KEY (tbiletid),
+	FOREIGN KEY (tbiletid) REFERENCES BILET (TicketId) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (TheatreId) REFERENCES TIYATRO (TheatreId) ON DELETE CASCADE ON UPDATE CASCADE
+);

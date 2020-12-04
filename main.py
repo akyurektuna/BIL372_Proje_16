@@ -37,7 +37,7 @@ def add_etkinlik_view():
 @main.route('/add_etkinlik', methods=['POST']) #bu method seller icin yazilmistir
 def add_etkinlik():
 	
-    stagename = request.form.get('sahneler')
+    stagename = request.form.get('stagename')
     etkinlikname = request.form.get('etkinlikName')
     price = request.form.get('price')
     etkinlikdate = request.form.get('etkinlikDate')
@@ -80,7 +80,7 @@ def add_etkinlik_admin_view():
 @main.route('/add_etkinlik_admin', methods=['POST']) #bu method admin icin yazilmistir
 def add_etkinlik_admin():
 	
-    stagename = request.form.get('sahneler')
+    stagename = request.form.get('stagename')
     etkinlikname = request.form.get('etkinlikName')
     price = request.form.get('price')
     etkinlikdate = request.form.get('etkinlikDate')
@@ -196,13 +196,15 @@ def etkinlik_list_admin():
 @main.route('/buy_ticket/<id>')
 def buy_ticket_view(id):
     etkinlik = Etkinlik.query.get(id)
-    return render_template('buy_ticket.html',name=current_user.username,etkinlik=etkinlik)
+    konserMi = db.session.query(db.exists().where(Konser.concertid == id)).scalar()
+    tiyatroMu = db.session.query(db.exists().where(Tiyatro.theatreid == id)).scalar()
+    return render_template('buy_ticket.html',name=current_user.username,etkinlik=etkinlik,konserMi=konserMi,tiyatroMu=tiyatroMu)
 
 @main.route('/buy_ticket/<id>/', methods = ['POST'])
 def buy_ticket(id):
     etkinlikname = request.form.get('etkinlikname')
-    konserMi = db.session.query(Konser).filter_by(concertid=id)
-    tiyatroMu = db.session.query(Tiyatro).filter_by(theatreid=id)
+    konserMi = db.session.query(db.exists().where(Konser.concertid == id)).scalar()
+    tiyatroMu = db.session.query(db.exists().where(Tiyatro.theatreid == id)).scalar()
 
     max_id = db.session.query(db.func.max(Bilet.ticketid)).scalar() #max_id yi buluyor
     
@@ -213,13 +215,16 @@ def buy_ticket(id):
 
     new_bilet = Bilet(ticketid= max_id, etkinlikid=id)
     db.session.add(new_bilet)
+    #db.session.commit()
+
     if konserMi:
         regionvalue = request.form.get('regionvalue')
-        new_konserbilet = Konserbileti(concertid=id,regionvalue=regionvalue)
+        new_konserbilet = Konserbileti(kbiletid=max_id,concertid=id,regionvalue=regionvalue)
         db.session.add(new_konserbilet)
+    
     elif tiyatroMu:
         seatnumber = request.form.get('seatnumber')
-        new_tiyatrobilet = Tiyatrobileti(theatreid=id,seatnumber=seatnumber)
+        new_tiyatrobilet = Tiyatrobileti(tbiletid=max_id,theatreid=id,seatnumber=seatnumber)
         db.session.add(new_tiyatrobilet)
 	
     db.session.commit()
