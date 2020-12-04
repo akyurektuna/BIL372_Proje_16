@@ -19,6 +19,7 @@
                           <th> Price </th>
                           <th> Date </th>
                           <th> City </th>
+                          <th> Ticket </th>
                         </tr>
                       </thead>
 					  {% for index in etkinlik %}
@@ -37,10 +38,14 @@
 						</td>
 						<td>
 							{{index.city}}
-						</td>
-						</tr>
-						{% endfor %}
+            </td>
+            <td><a href="/buy_ticket/{{index.etkinlik_id}}"> Buy Ticket </a></td>
+            </tr>
+            
+            {% endfor %}
+            
                     </table>
+                    
                   </div>
                 </div>
               </div>

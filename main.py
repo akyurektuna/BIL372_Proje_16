@@ -29,12 +29,14 @@ def profile():
 
 @main.route('/add_etkinlik')
 def add_etkinlik_view():
-	return render_template('etkinlik.html',name=current_user.username)
+
+    sahneler = Sahne.query.all()
+    return render_template('etkinlik.html',name=current_user.username,sahneler=sahneler)
 
 @main.route('/add_etkinlik', methods=['POST']) #bu method seller icin yazilmistir
 def add_etkinlik():
 	
-    stagename = request.form.get('stageName')
+    stagename = request.form.get('sahneler')
     etkinlikname = request.form.get('etkinlikName')
     price = request.form.get('price')
     etkinlikdate = request.form.get('etkinlikDate')
@@ -71,12 +73,13 @@ def add_etkinlik():
 
 @main.route('/add_etkinlik_admin')
 def add_etkinlik_admin_view():
-	return render_template('etkinlikAdmin.html',name=current_user.username)
+    sahneler = Sahne.query.all()
+    return render_template('etkinlikAdmin.html',name=current_user.username,sahneler=sahneler)
 
 @main.route('/add_etkinlik_admin', methods=['POST']) #bu method admin icin yazilmistir
 def add_etkinlik_admin():
 	
-    stagename = request.form.get('stageName')
+    stagename = request.form.get('sahneler')
     etkinlikname = request.form.get('etkinlikName')
     price = request.form.get('price')
     etkinlikdate = request.form.get('etkinlikDate')

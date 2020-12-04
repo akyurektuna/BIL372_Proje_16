@@ -22,7 +22,12 @@
                     <form class="forms-sample" action="/add_etkinlik" method="POST">
                       <div class="form-group">
                         <label>Stage Name</label>
-                        <input type="text" class="form-control" name="stageName" placeholder="Stage Name">
+                        <select class="form-control" id="exampleFormControlSelect3" name="stagename">
+                            <option value="0">Henuz Stage Yok</option>
+                            {% for s in sahneler %}
+                            <option value="{{s.stagename}}">{{s.stagename}}</option>
+                            {% endfor %}
+                        </select>
                       </div>
                       <div class="form-group">
                         <label>Etkinlik Name</label>
