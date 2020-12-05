@@ -202,6 +202,7 @@ def buy_ticket_view(id):
 
 @main.route('/buy_ticket/<id>/', methods = ['POST'])
 def buy_ticket(id):
+    etkinlik = Etkinlik.query.get(id)
     etkinlikname = request.form.get('etkinlikname')
     konserMi = db.session.query(db.exists().where(Konser.concertid == id)).scalar()
     tiyatroMu = db.session.query(db.exists().where(Tiyatro.theatreid == id)).scalar()
@@ -227,6 +228,16 @@ def buy_ticket(id):
         new_tiyatrobilet = Tiyatrobileti(tbiletid=max_id,theatreid=id,seatnumber=seatnumber,userid=current_user.userid)
         db.session.add(new_tiyatrobilet)
 	
+    max_idp = db.session.query(db.func.max(Payment.paymentid)).scalar() #max_id yi buluyor
+    
+    if max_idp is None:
+        max_idp = str(0)
+    else:
+        max_idp = str(int(max_idp) + 1) #burada numeric string inc edildi
+    
+    new_payment = Payment(paymentid=max_idp, ticketid= max_id, paymentvalue=etkinlik.price)
+    db.session.add(new_payment)
+
     db.session.commit()
     return redirect(url_for('main.etkinlik_list_customer'))
     #user icin biletler sayfası ekleyince redirect(url_for('main.user_bilet_list'))
