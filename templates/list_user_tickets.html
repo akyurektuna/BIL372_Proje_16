@@ -13,32 +13,76 @@
                     <h4 class="card-title">Biletlerim</h4>
                     <table class="table table-bordered">
                       <thead>
+                        <h5 class="card-title">Konser Biletlerim</h5>
                         <tr>
                           <th> Etkinlik Adi </th>
+                          <th> Sahne Adi </th>
+                          <th> Sehir </th>
                           <th> Price </th>
+                          <th> Tarih </th>
                           <th> Region Value</th>
-                          <th> Seat Number </th>
+                          
                         </tr>
                       </thead>
-					  {% for index in etkinlik %}
+					  {% for index in join_etkinlikKonser %}
 						<tr>
-						<td>
-							{{index.stagename}}
-						</td>
 						<td>
 							{{index.etkinlikname}}
 						</td>
 						<td>
-							{{index.price}}
-						</td>
-						<td>
-							{{index.etkinlikdate}}
+							{{index.stagename}}
 						</td>
 						<td>
 							{{index.city}}
 						</td>
-  
-          <td><a href="/buy_ticket/{{index.etkinlikid}}"> Buy Ticket </a></td>
+            <td>
+							{{index.price}}
+						</td>
+						<td>
+							{{index.etkinlikdate}}
+            </td>
+            <td>
+							{{index.regionvalue}}
+						</td>
+
+          </tr>
+						{% endfor %}
+                    </table>
+
+                    <table class="table table-bordered">
+                      <thead>
+                        <h5 class="card-title">Tiyatro Biletlerim</h5>
+                        <tr>
+                          <th> Etkinlik Adi </th>
+                          <th> Sahne Adi </th>
+                          <th> Sehir </th>
+                          <th> Price </th>
+                          <th> Tarih </th>
+                          <th> Seat Number</th>
+                          
+                        </tr>
+                      </thead>
+					  {% for index in join_etkinlikTiyatro %}
+						<tr>
+						<td>
+							{{index.etkinlikname}}
+						</td>
+						<td>
+							{{index.stagename}}
+						</td>
+						<td>
+							{{index.city}}
+						</td>
+            <td>
+							{{index.price}}
+						</td>
+						<td>
+							{{index.etkinlikdate}}
+            </td>
+            <td>
+							{{index.seatnumber}}
+						</td>
+
           </tr>
 						{% endfor %}
                     </table>

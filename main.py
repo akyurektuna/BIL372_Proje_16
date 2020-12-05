@@ -233,6 +233,8 @@ def buy_ticket(id):
 
 @main.route('/list_user_tickets')
 def list_user_tickets():
-    ticketskonser = Tiyatrobileti.query.filter_by(userid = current_user.userid) 
-    ticketstiyatro = Konserbileti.query.filter_by(userid = current_user.userid)
-    return render_template('list_user_tickets.html',ticketskonser=ticketskonser,ticketstiyatro=ticketstiyatro)
+    #ticketskonser = Konserbileti.query.filter_by(userid = current_user.userid) 
+    #ticketstiyatro = Tiyatrobileti.query.filter_by(userid = current_user.userid)
+    join_etkinlikKonser = db.session.query(Etkinlik, Konserbileti).join(Konserbileti, (Etkinlik.etkinlikid == Konserbileti.concertid) & (Konserbileti.userid == current_user.userid)).all()
+    join_etkinlikTiyatro = db.session.query(Etkinlik, Tiyatrobileti).join(Tiyatrobileti, (Etkinlik.etkinlikid == Tiyatrobileti.theatreid) &(Tiyatrobileti.userid == current_user.userid)).all()
+    return render_template('list_user_tickets.html',join_etkinlikKonser=join_etkinlikKonser,join_etkinlikTiyatro=join_etkinlikTiyatro)
