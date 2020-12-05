@@ -235,6 +235,8 @@ def buy_ticket(id):
 def list_user_tickets():
     #ticketskonser = Konserbileti.query.filter_by(userid = current_user.userid) 
     #ticketstiyatro = Tiyatrobileti.query.filter_by(userid = current_user.userid)
-    join_etkinlikKonser = db.session.query(Etkinlik, Konserbileti).join(Konserbileti, (Etkinlik.etkinlikid == Konserbileti.concertid) & (Konserbileti.userid == current_user.userid)).all()
-    join_etkinlikTiyatro = db.session.query(Etkinlik, Tiyatrobileti).join(Tiyatrobileti, (Etkinlik.etkinlikid == Tiyatrobileti.theatreid) &(Tiyatrobileti.userid == current_user.userid)).all()
+    join_etkinlikKonser = db.session.query(Etkinlik, Konserbileti).join(Etkinlik, (Etkinlik.etkinlikid == Konserbileti.concertid) & (Konserbileti.userid == current_user.userid))\
+        .add_columns(Etkinlik.etkinlikname,Etkinlik.stagename,Etkinlik.city,Etkinlik.price,Etkinlik.etkinlikdate,Konserbileti.regionvalue).all()
+    join_etkinlikTiyatro = db.session.query(Etkinlik, Tiyatrobileti).join(Tiyatrobileti, (Etkinlik.etkinlikid == Tiyatrobileti.theatreid) &(Tiyatrobileti.userid == current_user.userid))\
+        .add_columns(Etkinlik.etkinlikname,Etkinlik.stagename,Etkinlik.city,Etkinlik.price,Etkinlik.etkinlikdate,Tiyatrobileti.seatnumber).all()
     return render_template('list_user_tickets.html',join_etkinlikKonser=join_etkinlikKonser,join_etkinlikTiyatro=join_etkinlikTiyatro)

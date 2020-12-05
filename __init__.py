@@ -10,7 +10,7 @@ def create_app():
     CONFIG = {
        'postgresUrl':'localhost:5432',
        'postgresUser':'postgres',
-       'postgresPass':'123456', #tuna icin 123456, beyza icin 12345
+       'postgresPass':'12345', #tuna icin 123456, beyza icin 12345
        'postgresDb':'biletsepeti',
     }
 

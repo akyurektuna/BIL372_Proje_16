@@ -26,25 +26,24 @@
                       </thead>
 					  {% for index in join_etkinlikKonser %}
 						<tr>
-						<td>
-							{{index.etkinlikname}}
-						</td>
-						<td>
-							{{index.stagename}}
-						</td>
-						<td>
-							{{index.city}}
-						</td>
-            <td>
-							{{index.price}}
-						</td>
-						<td>
-							{{index.etkinlikdate}}
-            </td>
-            <td>
-							{{index.regionvalue}}
-						</td>
-
+              <td>
+                {{index.etkinlikname}}
+              </td>
+              <td>
+                {{index.stagename}}
+              </td>
+              <td>
+                {{index.city}}
+              </td>
+              <td>
+                {{index.price}}
+              </td>
+              <td>
+                {{index.etkinlikdate}}
+              </td>
+              <td>
+                {{index.regionvalue}}
+              </td>
           </tr>
 						{% endfor %}
                     </table>
