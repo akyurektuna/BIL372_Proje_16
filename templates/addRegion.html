@@ -1,0 +1,63 @@
+{% extends "baseAdmin.html" %}
+{% block user %}
+<p class="profile-name">{{ name }}</p>
+<p class="designation">Premium user</p>
+{% endblock %}
+{% block indexs %}
+<div class="main-panel">
+          <div class="content-wrapper">
+            <div class="row">
+              <div class="col-12 grid-margin">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title"> </h4>
+                    <p class="card-description"> Region </p>
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="notification is-danger">
+                            {{ messages[0] }}
+                        </div>
+                    {% endif %}
+                    {% endwith %}
+                    <form class="forms-sample" action="/add_region" method="POST">
+
+
+                        <div class="form-group">
+                            <label>Concert id</label>
+                            <select class="form-control" id="exampleFormControlSelect3" name="concertid">
+                                <option value="0">Yok</option>
+                                {% for i in konserler %}
+                                <option value="{{i.concertid}}">{{i.concertid}}</option>
+                                {% endfor %}
+                            </select>
+                          </div>
+
+                      <div class="form-group">
+                        <label>Region Section</label>
+                        <input type="number" class="form-control" name="regionsection" placeholder="regionsection">
+                      </div>
+
+					  <div class="form-group">
+                        <label>is occupied?</label>
+                        <input type="checkbox" name="isoccupied">
+                      </div>
+                      <button type="submit" class="btn btn-success mr-2">Submit</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- content-wrapper ends -->
+          <!-- partial:../../partials/_footer.html -->
+          <footer class="footer">
+            <div class="container-fluid clearfix">
+              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2019 <a href="http://www.bootstrapdash.com/" target="_blank">Bootstrapdash</a>. All rights reserved.</span>
+              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="mdi mdi-heart text-danger"></i>
+              </span>
+            </div>
+          </footer>
+          <!-- partial -->
+        </div>
+
+{% endblock %}

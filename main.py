@@ -251,3 +251,32 @@ def list_user_tickets():
     join_etkinlikTiyatro = db.session.query(Etkinlik, Tiyatrobileti).join(Tiyatrobileti, (Etkinlik.etkinlikid == Tiyatrobileti.theatreid) &(Tiyatrobileti.userid == current_user.userid))\
         .add_columns(Etkinlik.etkinlikname,Etkinlik.stagename,Etkinlik.city,Etkinlik.price,Etkinlik.etkinlikdate,Tiyatrobileti.seatnumber).all()
     return render_template('list_user_tickets.html',join_etkinlikKonser=join_etkinlikKonser,join_etkinlikTiyatro=join_etkinlikTiyatro)
+
+@main.route('/add_region')
+def add_region_view():
+    konserler = Konser.query.all()
+    return render_template('addRegion.html',name=current_user.username,konserler=konserler)
+@main.route('/add_region', methods=['POST']) #bu method seller icin yazildi
+def add_region():
+	
+    concertid = request.form.get('concertid')
+    regionsection = request.form.get('regionsection')
+    isoccupied = request.form.get('isoccupied')
+	
+    max_id = db.session.query(db.func.max(Region.regionid)).scalar() #max_id yi buluyor
+    
+    if max_id is None:
+        max_id = str(0)
+    else:
+        max_id = str(int(max_id) + 1) #burada numeric string inc edildi
+
+    new_region = Region(regionid= max_id, concertid=concertid,regionsection=regionsection,isoccupied=isoccupied)
+    db.session.add(new_region)
+    db.session.commit()
+
+    return redirect(url_for('main.list_region'))
+
+@main.route('/list_region')
+def list_region():
+	regions = Region.query.all() #aktif olan tüm sahneleri alıyoruz ve sahneList.html dosyasına sahne değişkeni ile gönderiyoruz
+	return render_template('listRegion.html',name=current_user.username, regions=regions)
