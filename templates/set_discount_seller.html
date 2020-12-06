@@ -1,4 +1,4 @@
-{% extends "baseAdmin.html" %}
+{% extends "baseSeller.html" %}
 {% block user %}
 <p class="profile-name">{{ name }}</p>
 <p class="designation">Premium user</p>
@@ -11,50 +11,41 @@
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title"> </h4>
-                    <p class="card-description"> Etkinlik </p>
+                    <p class="card-description"> Set Discount </p>
                     {% with messages = get_flashed_messages() %}
                     {% if messages %}
                         <div class="notification is-danger">
-                            {{ messages[0] }}. Go to <a href="{{ url_for('auth.login') }}">login page</a>.
+                            {{ messages[0] }}.
                         </div>
                     {% endif %}
                     {% endwith %}
-                    <form class="forms-sample" action="/add_etkinlik_admin" method="POST">
+                    <form class="forms-sample" action="/set_discount_seller/{{etkinlik.etkinlikid}}/" method="POST">
+
                       <div class="form-group">
-                        <label>Stage Name</label>
-                        <select class="form-control" id="exampleFormControlSelect3" name="stagename">
-                            <option value="0">Henuz Stage Yok</option>
-                            {% for s in sahneler %}
-                            <option value="{{s.stagename}}">{{s.stagename}}</option>
-                            {% endfor %}
-                        </select>
+                        <tr>Etkinlik Name: </tr>
+                        <td>
+							{{etkinlik.etkinlikname}}
+                        </td>
                       </div>
+                      
                       <div class="form-group">
-                        <label>Etkinlik Name</label>
-                        <input type="text" class="form-control" name="etkinlikName" placeholder="Etkinlik Name">
+                        <tr>Price: </tr>
+						<td>
+							{{etkinlik.price}}
+						</td>
                       </div>
-                      <div class="form-group">
-                        <label>Price</label>
-                        <input type="number" class="form-control" name="price">
-                      </div>
-                      <div class="form-group">
-                        <label>Etkinlik Date</label>
-                        <input type="date" class="form-control" name="etkinlikDate">
-                      </div>
+
 					  <div class="form-group">
-                        <label>City</label>
-                        <input type="text" class="form-control" name="city">
+                        <tr>New Price: </tr>
+                        <input type="number" class="form-control" name="newPrice" placeholder="<{{etkinlik.price}}">
                       </div>
+
 					  <div class="form-group">
-							<label class="radio">
-								<input type="radio" name="etkinlikType" value="tiyatro" id="tiyatro">
-								Tiyatro
-							</label>
-							<label class="radio">
-								<input type="radio" name="etkinlikType" value="konser" id="konser">
-								Konser
-							</label>
-						</div>
+                        <tr>Discount Code: </tr>
+                        <input type="text" class="form-control" name="discountCode">
+                      </div>
+
+					  <div class="form-group">
                       <button type="submit" class="btn btn-success mr-2">Submit</button>
                     </form>
                   </div>

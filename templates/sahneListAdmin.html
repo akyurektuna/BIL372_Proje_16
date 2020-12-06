@@ -11,13 +11,14 @@
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title">Stage List</h4>
-                    <table class="table table-bordered">
+					<table class="table table-bordered">
                       <thead>
                         <tr>
                           <th> Stage Name </th>
                           <th> Adres </th>
                           <th> City </th>
                           <th> Is Active </th>
+                          <th> Change Activity </th>
                         </tr>
                       </thead>
 					  {% for index in sahne %}
@@ -34,7 +35,11 @@
 						<td>
 							{{index.isactive}}
 						</td>
-						
+						<td>
+						<form class="forms-sample" action="/update_sahne_activity_admin/{{index.stagename}}/" method="POST">
+							<button type="submit" class="btn btn-success mr-2">Change</button>
+						</form>
+						</td>
 						</tr>
 						{% endfor %}
                     </table>
