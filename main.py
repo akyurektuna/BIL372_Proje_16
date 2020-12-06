@@ -281,8 +281,31 @@ def set_discount_seller(id):
     etkinlikname = request.form.get('etkinlikname')
     indirimkodu = request.form.get('discountCode')
     yenifiyat = request.form.get('newPrice')
-
     discount = Indirim(indirimkodu= indirimkodu, etkinlikid=id, newprice=yenifiyat)
+
+    if etkinlik.price < int(discount.newprice):
+        flash('Indirim uygulamadiniz. Fiyati guncel fiyatin altina dusurun.')
+        return render_template('set_discount_seller.html',name=current_user.username,etkinlik=etkinlik)
     db.session.add(discount)
     db.session.commit()
     return redirect(url_for('main.etkinlik_list'))
+
+@main.route('/set_discount_admin/<id>')
+def set_discount_admin_view(id):
+    etkinlik = Etkinlik.query.get(id)
+    return render_template('set_discount_admin.html',name=current_user.username,etkinlik=etkinlik)
+
+@main.route('/set_discount_admin/<id>/', methods = ['POST'])
+def set_discount_admin(id):
+    etkinlik = Etkinlik.query.get(id)
+    etkinlikname = request.form.get('etkinlikname')
+    indirimkodu = request.form.get('discountCode')
+    yenifiyat = request.form.get('newPrice')
+    discount = Indirim(indirimkodu= indirimkodu, etkinlikid=id, newprice=yenifiyat)
+    
+    if etkinlik.price < int(discount.newprice):
+        flash('Indirim uygulamadiniz. Fiyati guncel fiyatin altina dusurun.')
+        return render_template('set_discount_admin.html',name=current_user.username,etkinlik=etkinlik)
+    db.session.add(discount)
+    db.session.commit()
+    return redirect(url_for('main.etkinlik_list_admin'))

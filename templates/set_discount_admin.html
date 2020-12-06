@@ -15,38 +15,35 @@
                     {% with messages = get_flashed_messages() %}
                     {% if messages %}
                         <div class="notification is-danger">
-                            {{ messages[0] }}. Go to <a href="{{ url_for('auth.login') }}">login page</a>.
+                            {{ messages[0] }}.
                         </div>
                     {% endif %}
                     {% endwith %}
-                    <form class="forms-sample" action="/buy_ticket/{{etkinlik.etkinlikid}}/" method="POST">
+                    <form class="forms-sample" action="/set_discount_admin/{{etkinlik.etkinlikid}}/" method="POST">
 
                       <div class="form-group">
-                        <label>Etkinlik Name: </label>
+                        <tr>Etkinlik Name: </tr>
                         <td>
 							{{etkinlik.etkinlikname}}
                         </td>
                       </div>
                       
                       <div class="form-group">
-                        <label>Price: </label>
+                        <tr>Price: </tr>
 						<td>
 							{{etkinlik.price}}
 						</td>
                       </div>
 
-                      {% if konserMi %}
 					  <div class="form-group">
-                        <label>Region Value</label>
-                        <input type="number" class="form-control" name="regionvalue">
+                        <tr>New Price: </tr>
+                        <input type="number" class="form-control" name="newPrice" placeholder="<{{etkinlik.price}}">
                       </div>
 
-                      {% elif tiyatroMu %}
 					  <div class="form-group">
-                        <label>Seat Number</label>
-                        <input type="number" class="form-control" name="seatnumber">
+                        <tr>Discount Code: </tr>
+                        <input type="text" class="form-control" name="discountCode">
                       </div>
-                      {% endif %}
 
 					  <div class="form-group">
                       <button type="submit" class="btn btn-success mr-2">Submit</button>
