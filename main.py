@@ -281,6 +281,7 @@ def list_user_tickets():
     print(join_etkinlikKonser)
     return render_template('list_user_tickets.html',join_etkinlikKonser=join_etkinlikKonser,join_etkinlikTiyatro=join_etkinlikTiyatro)
 
+
 @main.route('/set_discount_seller/<id>')
 def set_discount_seller_view(id):
     etkinlik = Etkinlik.query.get(id)
@@ -320,3 +321,69 @@ def set_discount_admin(id):
     db.session.add(discount)
     db.session.commit()
     return redirect(url_for('main.etkinlik_list_admin'))
+
+@main.route('/add_region')
+def add_region_view():
+    konserler = Konser.query.all()
+    return render_template('addRegion.html',name=current_user.username,konserler=konserler)
+@main.route('/add_region', methods=['POST']) #bu method seller icin yazildi
+def add_region():
+	
+    concertid = request.form.get('concertid')
+    regionsection = request.form.get('regionsection')
+    isoccupied = request.form.get('isoccupied')
+	
+    max_id = db.session.query(db.func.max(Region.regionid)).scalar() #max_id yi buluyor
+    
+    if max_id is None:
+        max_id = str(0)
+    else:
+        max_id = str(int(max_id) + 1) #burada numeric string inc edildi
+
+    if isoccupied=='yes':
+        new_region = Region(regionid= max_id, concertid=concertid,regionsection=regionsection,isoccupied=True)     
+    elif isoccupied=='no':
+        new_region = Region(regionid= max_id, concertid=concertid,regionsection=regionsection,isoccupied=False)
+
+    db.session.add(new_region)
+    db.session.commit()
+
+    return redirect(url_for('main.list_region'))
+
+@main.route('/list_region')
+def list_region():
+	regions = Region.query.all() #aktif olan tüm sahneleri alıyoruz ve sahneList.html dosyasına sahne değişkeni ile gönderiyoruz
+	return render_template('listRegion.html',name=current_user.username, regions=regions)
+
+##########
+@main.route('/add_koltuk')
+def add_koltuk_view():
+    tiyatrolar = Tiyatro.query.all()
+    return render_template('addKoltuk.html',name=current_user.username,tiyatrolar=tiyatrolar)
+@main.route('/add_koltuk', methods=['POST']) #bu method seller icin yazildi
+def add_koltuk():
+	
+    theatreid = request.form.get('theatreid')
+    isoccupied = request.form.get('isoccupied')
+	
+    max_id = db.session.query(db.func.max(Koltuk.seatid)).scalar() #max_id yi buluyor
+    
+    if max_id is None:
+        max_id = str(0)
+    else:
+        max_id = str(int(max_id) + 1) #burada numeric string inc edildi
+
+    if isoccupied=='yes':
+        new_koltuk = Koltuk(seatid= max_id, theatreid=theatreid,isoccupied=True) 
+    elif isoccupied=='no':
+        new_koltuk = Koltuk(seatid= max_id, theatreid=theatreid,isoccupied=False)
+
+    db.session.add(new_koltuk)
+    db.session.commit()
+
+    return redirect(url_for('main.list_koltuk'))
+
+@main.route('/list_koltuk')
+def list_koltuk():
+	koltuklar = Koltuk.query.all() #aktif olan tüm sahneleri alıyoruz ve sahneList.html dosyasına sahne değişkeni ile gönderiyoruz
+	return render_template('listKoltuk.html',name=current_user.username, koltuklar=koltuklar)
