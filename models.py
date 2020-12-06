@@ -52,8 +52,8 @@ class Etkinlik(db.Model):
 
 class Indirim(db.Model):
     indirimkodu = db.Column(db.String(100),primary_key=True)
-    ticketid = db.Column(db.String(100))
-    indirimmiktari = db.Column(db.Integer())
+    etkinlikid = db.Column(db.String(100))
+    newprice = db.Column(db.Integer())
     def get_id(self):
         return self.indirimkodu
 

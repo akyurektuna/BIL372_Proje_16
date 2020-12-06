@@ -1,4 +1,4 @@
-{% extends "baseCustomer.html" %}
+{% extends "baseSeller.html" %}
 {% block user %}
 <p class="profile-name">{{ name }}</p>
 <p class="designation">Premium user</p>
@@ -11,7 +11,7 @@
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title"> </h4>
-                    <p class="card-description"> Buy Ticket </p>
+                    <p class="card-description"> Set Discount </p>
                     {% with messages = get_flashed_messages() %}
                     {% if messages %}
                         <div class="notification is-danger">
@@ -19,7 +19,7 @@
                         </div>
                     {% endif %}
                     {% endwith %}
-                    <form class="forms-sample" action="/buy_ticket/{{etkinlik.etkinlikid}}/" method="POST">
+                    <form class="forms-sample" action="/set_discount_seller/{{etkinlik.etkinlikid}}/" method="POST">
 
                       <div class="form-group">
                         <tr>Etkinlik Name: </tr>
@@ -35,22 +35,16 @@
 						</td>
                       </div>
 
-                      {% if konserMi %}
 					  <div class="form-group">
-                        <tr>Region Value</tr>
-                        <input type="number" class="form-control" name="regionvalue">
+                        <tr>New Price: </tr>
+                        <input type="number" class="form-control" name="newPrice" placeholder="<{{etkinlik.price}}">
                       </div>
 
-                      {% elif tiyatroMu %}
-					  <div class="form-group">
-                        <tr>Seat Number</tr>
-                        <input type="number" class="form-control" name="seatnumber">
-                      </div>
-                      {% endif %}
 					  <div class="form-group">
                         <tr>Discount Code: </tr>
                         <input type="text" class="form-control" name="discountCode">
                       </div>
+
 					  <div class="form-group">
                       <button type="submit" class="btn btn-success mr-2">Submit</button>
                     </form>

@@ -204,9 +204,10 @@ def buy_ticket_view(id):
 def buy_ticket(id):
     etkinlik = Etkinlik.query.get(id)
     etkinlikname = request.form.get('etkinlikname')
+    indirimkodu = request.form.get('discountCode')
     konserMi = db.session.query(db.exists().where(Konser.concertid == id)).scalar()
     tiyatroMu = db.session.query(db.exists().where(Tiyatro.theatreid == id)).scalar()
-
+    
     max_id = db.session.query(db.func.max(Bilet.ticketid)).scalar() #max_id yi buluyor
     
     if max_id is None:
@@ -235,9 +236,26 @@ def buy_ticket(id):
     else:
         max_idp = str(int(max_idp) + 1) #burada numeric string inc edildi
     
-    new_payment = Payment(paymentid=max_idp, ticketid= max_id, paymentvalue=etkinlik.price)
-    db.session.add(new_payment)
-
+    indirim = Indirim.query.filter_by(indirimkodu = indirimkodu).first()
+    
+    if indirimkodu == '':
+        print('4. secenek girildi')
+        new_payment = Payment(paymentid=max_idp, ticketid= max_id, paymentvalue=etkinlik.price)
+        db.session.add(new_payment)
+    elif indirim is None:
+        print('1. secenek girildi')
+        return render_template('buy_ticket.html',name=current_user.username,etkinlik=etkinlik,konserMi=konserMi,tiyatroMu=tiyatroMu)
+    elif indirim.etkinlikid == id:
+        print('2. secenek girildi')
+        new_payment = Payment(paymentid=max_idp, ticketid= max_id, paymentvalue=indirim.newprice)
+        db.session.add(new_payment)
+    elif indirim.etkinlikid != id:
+        print('3. secenek girildi')
+        return render_template('buy_ticket.html',name=current_user.username,etkinlik=etkinlik,konserMi=konserMi,tiyatroMu=tiyatroMu)
+    else:
+        print('5. secenek girildi')
+        new_payment = Payment(paymentid=max_idp, ticketid= max_id, paymentvalue=etkinlik.price)
+        db.session.add(new_payment)
     db.session.commit()
     return redirect(url_for('main.etkinlik_list_customer'))
     #user icin biletler sayfası ekleyince redirect(url_for('main.user_bilet_list'))
@@ -246,8 +264,28 @@ def buy_ticket(id):
 def list_user_tickets():
     #ticketskonser = Konserbileti.query.filter_by(userid = current_user.userid) 
     #ticketstiyatro = Tiyatrobileti.query.filter_by(userid = current_user.userid)
-    join_etkinlikKonser = db.session.query(Etkinlik, Konserbileti).join(Etkinlik, (Etkinlik.etkinlikid == Konserbileti.concertid) & (Konserbileti.userid == current_user.userid))\
-        .add_columns(Etkinlik.etkinlikname,Etkinlik.stagename,Etkinlik.city,Etkinlik.price,Etkinlik.etkinlikdate,Konserbileti.regionvalue).all()
-    join_etkinlikTiyatro = db.session.query(Etkinlik, Tiyatrobileti).join(Tiyatrobileti, (Etkinlik.etkinlikid == Tiyatrobileti.theatreid) &(Tiyatrobileti.userid == current_user.userid))\
-        .add_columns(Etkinlik.etkinlikname,Etkinlik.stagename,Etkinlik.city,Etkinlik.price,Etkinlik.etkinlikdate,Tiyatrobileti.seatnumber).all()
+    join_etkinlikKonser = db.session.query(Etkinlik, Konserbileti, Payment).join(Etkinlik, (Etkinlik.etkinlikid == Konserbileti.concertid) & (Konserbileti.userid == current_user.userid))\
+        .join(Payment, Payment.ticketid == Konserbileti.kbiletid)\
+        .add_columns(Etkinlik.etkinlikname,Etkinlik.stagename,Etkinlik.city,Payment.paymentvalue,Etkinlik.etkinlikdate,Konserbileti.regionvalue).all()
+    join_etkinlikTiyatro = db.session.query(Etkinlik, Tiyatrobileti, Payment).join(Tiyatrobileti, (Etkinlik.etkinlikid == Tiyatrobileti.theatreid) &(Tiyatrobileti.userid == current_user.userid))\
+        .join(Payment, Payment.ticketid == Tiyatrobileti.tbiletid)\
+        .add_columns(Etkinlik.etkinlikname,Etkinlik.stagename,Etkinlik.city,Payment.paymentvalue,Etkinlik.etkinlikdate,Tiyatrobileti.seatnumber).all()
+    print(join_etkinlikKonser)
     return render_template('list_user_tickets.html',join_etkinlikKonser=join_etkinlikKonser,join_etkinlikTiyatro=join_etkinlikTiyatro)
+
+@main.route('/set_discount_seller/<id>')
+def set_discount_seller_view(id):
+    etkinlik = Etkinlik.query.get(id)
+    return render_template('set_discount_seller.html',name=current_user.username,etkinlik=etkinlik)
+
+@main.route('/set_discount_seller/<id>/', methods = ['POST'])
+def set_discount_seller(id):
+    etkinlik = Etkinlik.query.get(id)
+    etkinlikname = request.form.get('etkinlikname')
+    indirimkodu = request.form.get('discountCode')
+    yenifiyat = request.form.get('newPrice')
+
+    discount = Indirim(indirimkodu= indirimkodu, etkinlikid=id, newprice=yenifiyat)
+    db.session.add(discount)
+    db.session.commit()
+    return redirect(url_for('main.etkinlik_list'))
