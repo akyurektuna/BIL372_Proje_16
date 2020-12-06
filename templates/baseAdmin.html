@@ -96,6 +96,24 @@
               </div>
             </li>
 
+            
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="collapse" href="#ui-basic3" aria-expanded="false" aria-controls="ui-basic3">
+                <i class="menu-icon typcn typcn-coffee"></i>
+                <span class="menu-title">Koltuk</span>
+                <i class="menu-arrow"></i>
+              </a>
+              <div class="collapse" id="ui-basic3">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.add_koltuk') }}">Koltuk Ekle</a>
+                  </li>
+				  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.list_koltuk') }}">Tüm Koltukları Listele</a>
+                  </li>
+              </div>
+            </li>
+
 
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('auth.logout') }}">

@@ -270,7 +270,11 @@ def add_region():
     else:
         max_id = str(int(max_id) + 1) #burada numeric string inc edildi
 
-    new_region = Region(regionid= max_id, concertid=concertid,regionsection=regionsection,isoccupied=isoccupied)
+    if isoccupied=='yes':
+        new_region = Region(regionid= max_id, concertid=concertid,regionsection=regionsection,isoccupied=True)     
+    elif isoccupied=='no':
+        new_region = Region(regionid= max_id, concertid=concertid,regionsection=regionsection,isoccupied=False)
+
     db.session.add(new_region)
     db.session.commit()
 
@@ -280,3 +284,36 @@ def add_region():
 def list_region():
 	regions = Region.query.all() #aktif olan tüm sahneleri alıyoruz ve sahneList.html dosyasına sahne değişkeni ile gönderiyoruz
 	return render_template('listRegion.html',name=current_user.username, regions=regions)
+
+##########
+@main.route('/add_koltuk')
+def add_koltuk_view():
+    tiyatrolar = Tiyatro.query.all()
+    return render_template('addKoltuk.html',name=current_user.username,tiyatrolar=tiyatrolar)
+@main.route('/add_koltuk', methods=['POST']) #bu method seller icin yazildi
+def add_koltuk():
+	
+    theatreid = request.form.get('theatreid')
+    isoccupied = request.form.get('isoccupied')
+	
+    max_id = db.session.query(db.func.max(Koltuk.seatid)).scalar() #max_id yi buluyor
+    
+    if max_id is None:
+        max_id = str(0)
+    else:
+        max_id = str(int(max_id) + 1) #burada numeric string inc edildi
+
+    if isoccupied=='yes':
+        new_koltuk = Koltuk(seatid= max_id, theatreid=theatreid,isoccupied=True) 
+    elif isoccupied=='no':
+        new_koltuk = Koltuk(seatid= max_id, theatreid=theatreid,isoccupied=False)
+
+    db.session.add(new_koltuk)
+    db.session.commit()
+
+    return redirect(url_for('main.list_koltuk'))
+
+@main.route('/list_koltuk')
+def list_koltuk():
+	koltuklar = Koltuk.query.all() #aktif olan tüm sahneleri alıyoruz ve sahneList.html dosyasına sahne değişkeni ile gönderiyoruz
+	return render_template('listKoltuk.html',name=current_user.username, koltuklar=koltuklar)
