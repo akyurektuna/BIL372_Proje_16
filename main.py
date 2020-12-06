@@ -239,21 +239,18 @@ def buy_ticket(id):
     indirim = Indirim.query.filter_by(indirimkodu = indirimkodu).first()
     
     if indirimkodu == '':
-        print('4. secenek girildi')
         new_payment = Payment(paymentid=max_idp, ticketid= max_id, paymentvalue=etkinlik.price)
         db.session.add(new_payment)
     elif indirim is None:
-        print('1. secenek girildi')
+        flash('Indirim kodu bulunmamaktadir. Odeme gecersiz. Tekrar odeme yapiniz.')
         return render_template('buy_ticket.html',name=current_user.username,etkinlik=etkinlik,konserMi=konserMi,tiyatroMu=tiyatroMu)
     elif indirim.etkinlikid == id:
-        print('2. secenek girildi')
         new_payment = Payment(paymentid=max_idp, ticketid= max_id, paymentvalue=indirim.newprice)
         db.session.add(new_payment)
     elif indirim.etkinlikid != id:
-        print('3. secenek girildi')
+        flash('Indirim kodu bulunmamaktadir. Odeme gecersiz. Tekrar odeme yapiniz.')
         return render_template('buy_ticket.html',name=current_user.username,etkinlik=etkinlik,konserMi=konserMi,tiyatroMu=tiyatroMu)
     else:
-        print('5. secenek girildi')
         new_payment = Payment(paymentid=max_idp, ticketid= max_id, paymentvalue=etkinlik.price)
         db.session.add(new_payment)
     db.session.commit()
