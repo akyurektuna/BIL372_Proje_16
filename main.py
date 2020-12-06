@@ -4,7 +4,7 @@ from sqlalchemy.sql import exists
 from .models import *
 from . import db
 from sqlalchemy import exc
-
+from sqlalchemy import update
 
 main = Blueprint('main', __name__)
 
@@ -165,6 +165,17 @@ def add_sahne_admin():
         new_stage = Sahne(stagename=stageName, adres=adres, city=city, isactive=False)
 
     db.session.add(new_stage)
+    db.session.commit()
+    return redirect(url_for('main.sahne_list_admin'))
+
+@main.route('/update_sahne_activity_admin/<stagename>/')
+def update_sahne_activity_admin_view(stagename):
+	return render_template('sahne_list_admin.html',name=current_user.username)
+
+@main.route('/update_sahne_activity_admin/<stagename>/', methods=['POST']) #bu method admin icin yazildi
+def update_sahne_activity_admin(stagename):
+    sahne = Sahne.query.filter_by(stagename=stagename).first()
+    sahne.isactive = not sahne.isactive
     db.session.commit()
     return redirect(url_for('main.sahne_list_admin'))
 
