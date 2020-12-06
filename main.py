@@ -281,6 +281,15 @@ def list_user_tickets():
     print(join_etkinlikKonser)
     return render_template('list_user_tickets.html',join_etkinlikKonser=join_etkinlikKonser,join_etkinlikTiyatro=join_etkinlikTiyatro)
 
+@main.route('/delete_etkinlik_admin/<id>')
+def delete_etkinlik_admin_view(id):
+	return render_template('etkinlik_list_admin.html',name=current_user.username)
+
+@main.route('/delete_etkinlik_admin/<id>', methods=['POST']) #bu method admin icin yazildi
+def delete_etkinlik_admin(id):
+    Etkinlik.query.filter_by(etkinlikid=id).delete()    
+    db.session.commit()
+    return redirect(url_for('main.etkinlik_list_admin'))
 
 @main.route('/set_discount_seller/<id>')
 def set_discount_seller_view(id):
